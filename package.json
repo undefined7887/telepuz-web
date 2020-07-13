@@ -1,0 +1,26 @@
+{
+  "name": "telepuz-web",
+  "version": "0.1.0",
+  "description": "Web client for Telepuz app",
+  "author": "Yaroslav <undefined7887@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "BUILD_MODE=development webpack-dev-server",
+    "build": "BUILD_MODE=production webpack"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.6.0",
+    "html-webpack-plugin": "^4.3.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
