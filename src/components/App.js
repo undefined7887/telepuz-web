@@ -1,9 +1,16 @@
 import React from 'react';
+import style from './App.css'
+import LoginForm from './LoginForm'
 
-export default class App extends React.Component {
-    render() {
-        return (
-            <h1>Hello world</h1>
-        )
-    }
+
+class App extends React.Component {
+  render() {
+    return (
+      <div className={style.app}>
+        <LoginForm />
+      </div>
+    )
+  }
 }
+
+export default App;
