@@ -21,12 +21,12 @@ module.exports = {
       // Все файлы с разрешениями '.js' или '.jsx' будет обрабатывать 'babel-loader'
       {
         test: /\.js$/,
-        use: ['babel-loader']
+        loader: 'babel-loader'
       },
 
       // Все файлы с разрешениями '.css' будут обрабатывать 'css-loader' и 'style-loader'
       {
-        test: /\.css$/,
+        test: /\.styl$/,
         use: [
           'style-loader',
           {
@@ -34,14 +34,15 @@ module.exports = {
             options: {
               modules: true
             }
-          }
+          },
+          'stylus-loader'
         ]
       },
 
       // Файлы с разрешениями '.woff' '.woff2' '.eof' '.ttf' '.otf' будет обрабатывать 'file-loader'
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: ['file-loader']
+        loader: 'file-loader'
       },
     ]
   },
