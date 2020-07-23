@@ -1,17 +1,17 @@
 import React from "react"
-import "./Authors.styl"
+import style from "./Authors.styl"
 
-class Authors extends React.Component {
+export default class Authors extends React.Component {
     render() {
         return (
-            <div className="Authors-container">
+            <div className={style.container}>
                 Made for fun and test by<br/>
-                <a className="Authors-link"
+                <a className={style.link}
                    href="https://github.com/undefined7887">
                     undefined
                 </a>
                 &nbsp;and&nbsp;
-                <a className="Authors-link"
+                <a className={style.link}
                    href="https://github.com/KerJen">
                     KerJen
                 </a>
@@ -19,5 +19,3 @@ class Authors extends React.Component {
         );
     }
 }
-
-export default Authors;

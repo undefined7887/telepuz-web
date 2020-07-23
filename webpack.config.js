@@ -16,7 +16,7 @@ module.exports = {
         filename: "index.js",
     },
 
-    // Говорим webpack какие пути мы будем обрабатывать
+    // Определяем файлы которые мы будем обрабатывать
     resolve: {
         extensions: [".js", ".jsx", ".ts", ".tsx"]
     },
@@ -32,7 +32,18 @@ module.exports = {
             // Все файлы с разрешениями '.styl' будут обрабатывать 'stylus-loader', 'css-loader' и 'style-loader'
             {
                 test: /\.styl$/,
-                loader: "style-loader!css-loader!stylus-loader"
+                use: [
+                    "style-loader",
+                    {
+                        loader: "css-loader",
+                        options: {
+                            modules: {
+                                localIdentName: "[name]_[local]_[hash:base64:5]"
+                            },
+                        }
+                    },
+                    "stylus-loader"
+                ]
             }
         ]
     },
