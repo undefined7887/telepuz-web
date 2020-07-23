@@ -1,63 +1,54 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-let distPath = path.join(__dirname, 'dist');
+let buildPath = path.join(__dirname, 'build');
 
 module.exports = {
-  // Определяем режим сборки
-  mode: process.env.BUILD_MODE,
+    // Определяем режим сборки
+    mode: process.env.BUILD_MODE,
 
-  // Определяем путь главного входного файла
-  entry: './src/index.js',
+    // Определяем путь главного входного файла
+    entry: "./src/index.tsx",
 
-  // Определяем путь главного выходного файла
-  output: {
-    path: distPath,
-    filename: 'index.js',
-  },
+    // Определяем путь главного выходного файла
+    output: {
+        path: buildPath,
+        filename: "index.js",
+    },
 
-  module: {
-    rules: [
-      // Все файлы с разрешениями '.js' или '.jsx' будет обрабатывать 'babel-loader'
-      {
-        test: /\.js$/,
-        loader: 'babel-loader'
-      },
+    // Говорим webpack какие пути мы будем обрабатывать
+    resolve: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"]
+    },
 
-      // Все файлы с разрешениями '.css' будут обрабатывать 'css-loader' и 'style-loader'
-      {
-        test: /\.styl$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true
+    module: {
+        rules: [
+            // Все файлы с разрешениями '.ts' или '.tsx' будет обрабатывать 'ts-loader'
+            {
+                test: /\.tsx?$/,
+                loader: "ts-loader"
+            },
+
+            // Все файлы с разрешениями '.styl' будут обрабатывать 'stylus-loader', 'css-loader' и 'style-loader'
+            {
+                test: /\.styl$/,
+                loader: "style-loader!css-loader!stylus-loader"
             }
-          },
-          'stylus-loader'
         ]
-      },
+    },
 
-      // Файлы с разрешениями '.woff' '.woff2' '.eof' '.ttf' '.otf' будет обрабатывать 'file-loader'
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        loader: 'file-loader'
-      },
-    ]
-  },
+    // Включаем обработку главного html файла
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: "./src/index.html",
+            filename: "index.html"
+        })
+    ],
 
-  // Включаем обработку главного html файла
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html'
-    })
-  ],
-
-  // Настройка dev-сервера
-  devServer: {
-    contentBase: distPath,
-    compress: true,
-    port: 8080
-  }
+    // Настройка dev-сервера
+    devServer: {
+        contentBase: buildPath,
+        compress: true,
+        port: 8080
+    }
 };
