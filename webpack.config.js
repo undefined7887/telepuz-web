@@ -33,7 +33,15 @@ module.exports = {
             {
                 test: /\.styl$/,
                 use: [
-                    "style-loader",
+                    {
+                        loader: "style-loader",
+                        options: {
+                            injectType: 'singletonStyleTag',
+                            attributes: {
+                                type: 'text/css'
+                            }
+                        }
+                    },
                     {
                         loader: "css-loader",
                         options: {

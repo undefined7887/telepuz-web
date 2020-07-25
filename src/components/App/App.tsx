@@ -2,9 +2,13 @@ import React from "react";
 import style from "./App.styl"
 import AuthForm from "../AuthForm/AuthForm"
 import Authors from "../Authors/Authors";
-import Socket from "../../lib/Socket";
+import Socket from "../../transport/Socket";
 
-export default class App extends React.Component {
+interface IProps {
+    socket: Socket
+}
+
+export default class App extends React.Component<IProps, unknown> {
     render() {
         return (
             <div className={style.container}>
