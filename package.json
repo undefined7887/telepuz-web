@@ -6,8 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "BUILD_MODE=development webpack-dev-server",
-    "build": "BUILD_MODE=development webpack",
-    "build-release": "BUILD_MODE=production webpack"
+    "build": "BUILD_MODE=production webpack"
   },
   "dependencies": {
     "@msgpack/msgpack": "^1.12.2",

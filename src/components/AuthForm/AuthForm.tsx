@@ -1,22 +1,22 @@
 import React from "react";
 import style from "./AuthForm.styl"
 
-interface IState {
+interface State {
     buttonActive: boolean
 }
 
-export default class AuthForm extends React.Component<unknown, IState> {
+export default class AuthForm extends React.Component<unknown, State> {
     state = {buttonActive: false}
 
     onKeyUp(event: React.ChangeEvent<HTMLInputElement>) {
         let value = event.target.value
 
-        if (value === '' && this.state.buttonActive) {
+        if (!value.length && this.state.buttonActive) {
             this.setState({buttonActive: false})
             return
         }
 
-        if (value !== '' && !this.state.buttonActive) {
+        if (value.length && !this.state.buttonActive) {
             this.setState({buttonActive: true})
         }
     }

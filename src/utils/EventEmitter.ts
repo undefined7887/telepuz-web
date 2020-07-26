@@ -8,17 +8,17 @@ export default class EventEmitter {
 
     on(path: string, cb: (data?: unknown) => void) {
         this.listeners[path] = (this.listeners[path] || [])
-            .concat({once: false, cb});
+            .concat({once: false, cb})
     }
 
     once(path: string, cb: (data?: unknown) => void) {
         this.listeners[path] = (this.listeners[path] || [])
-            .concat({once: true, cb});
+            .concat({once: true, cb})
     }
 
     off(path: string, cb: (data?: unknown) => void) {
         this.listeners[path] = (this.listeners[path] || [])
-            .filter(handler => handler.cb !== cb);
+            .filter(handler => handler.cb !== cb)
     }
 
     emit(path: string, data?: unknown) {
