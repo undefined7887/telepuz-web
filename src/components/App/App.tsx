@@ -7,7 +7,7 @@ export default class App extends React.Component {
     private socket = new Socket("sudox.ru:5000")
 
     private onAuthPageReady(userId: string) {
-        console.log(this)
+        console.log(this.socket)
         alert(`Successful auth, user_id: ${userId}`)
     }
 

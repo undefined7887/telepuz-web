@@ -3,15 +3,12 @@ import styles from "./AuthForm.styl"
 import {classes} from "../../lib/utils";
 
 interface Props {
-    labelText: string
-    inputText: string
-    buttonText: string
+    regexp: RegExp
     onReady?: () => void
 }
 
 interface State {
-    error: boolean
-    labelText: string
+    inputDisabled: boolean
     buttonDisabled: boolean
 }
 
@@ -19,54 +16,65 @@ export default class AuthForm extends React.Component<Props, State> {
     private input = React.createRef<HTMLInputElement>()
 
     state = {
-        error: false,
-        labelText: this.props.labelText,
-        buttonDisabled: false
+        inputDisabled: false,
+        buttonDisabled: true
     }
 
     getValue(): string {
         return this.input.current.value
     }
 
-    update(error: boolean, labelText: string, buttonDisabled: boolean) {
-        this.setState({error, labelText, buttonDisabled})
-    }
-
-    private onInputKeyPress(event: KeyboardEvent) {
+    private onInputKeyUp(event: KeyboardEvent) {
         if (event.key === "Enter") {
-            this.props.onReady?.()
+            this.emitReady()
+            return
+        }
+
+        if (this.props.regexp.test(this.getValue())) {
+            if (this.state.buttonDisabled) {
+                this.setState({buttonDisabled: false})
+            }
+        } else {
+            if (!this.state.buttonDisabled) {
+                this.setState({buttonDisabled: true})
+            }
         }
     }
 
     private onButtonCLick() {
         if (!this.state.buttonDisabled) {
-            this.props.onReady?.()
+            this.emitReady()
         }
     }
 
-    render() {
-        let formStyles = classes({
-            [styles.form]: true,
-            [styles.error]: this.state.error
+    private emitReady() {
+        this.setState({
+            inputDisabled: true,
+            buttonDisabled: true
         })
 
+        this.props.onReady?.()
+    }
+
+    render() {
         let buttonClasses = classes({
             [styles.button]: true,
-            [styles.disabled]: this.state.buttonDisabled
+            [styles.buttonDisabled]: this.state.buttonDisabled
         })
 
         return (
-            <div className={formStyles}>
+            <div className={styles.form}>
                 <div>
-                    <div className={styles.label}>{this.state.labelText}</div>
+                    <div className={styles.label}>Никнейм</div>
                     <input ref={this.input}
                            className={styles.input}
-                           placeholder={this.props.inputText}
-                           onKeyPress={this.onInputKeyPress.bind(this)}/>
+                           placeholder="Кто мы с тобой, орлы или вороны?"
+                           disabled={this.state.inputDisabled}
+                           onKeyUp={this.onInputKeyUp.bind(this)}/>
                 </div>
                 <div className={buttonClasses}
                      onClick={this.onButtonCLick.bind(this)}>
-                    {this.props.buttonText}
+                    Войти
                 </div>
             </div>
         )

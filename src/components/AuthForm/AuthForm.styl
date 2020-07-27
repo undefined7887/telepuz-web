@@ -4,13 +4,6 @@
     flex-direction column
     align-items center
 
-.error
-    .label
-        color #e53935
-
-    .input
-        border 1px solid #e53935
-
 .label
     color #bdbdbd
     font-size 18px
@@ -24,6 +17,10 @@
     margin-top 10px
     height 50px
     width 425px
+
+    &:disabled
+        color #bdbdbd
+        background white
 
     &::placeholder
         color #bdbdbd
@@ -42,5 +39,6 @@
     cursor pointer
     transition background 0.2s ease
 
-.disabled
+.buttonDisabled
     background #d1d1d1
+

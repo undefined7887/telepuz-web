@@ -23,27 +23,11 @@ export default class AuthPage extends React.Component<Props> {
     private form = React.createRef<AuthForm>()
 
     private onFormReady() {
-        this.createUser(this.form.current.getValue())
-    }
+        let nickname = this.form.current.getValue()
 
-    private createUser(nickname: string) {
-        let form = this.form.current
-
-        if (!nicknameRegexp.test(nickname)) {
-            form.update(true, "Неправильный формат никнейма", false)
-            return
-        }
-
-        form.update(false, "Никнейм", true)
-
-        this.socket.once("users.create", async (reply: UsersCreateReply) => {
+        this.socket.once("users.create", async (replyMessage: UsersCreateReply) => {
             await timeout(1000)
-            if (reply.result) {
-                form.update(true, "Неправильный формат никнейма", false)
-                return
-            }
-
-            this.props.onReady?.(reply.user_id)
+            this.props.onReady?.(replyMessage.user_id)
         })
 
         this.socket.emit("users.create", {user_nickname: nickname})
@@ -56,9 +40,7 @@ export default class AuthPage extends React.Component<Props> {
                 <div className={style.logo}>Telepuz</div>
                 <div className={style.slogan}>Алё, ну чё там с деньгами?</div>
                 <AuthForm ref={this.form}
-                          labelText="Никнейм"
-                          inputText="Кто мы с тобой, орлы или вороны?"
-                          buttonText="Войти"
+                          regexp={nicknameRegexp}
                           onReady={this.onFormReady.bind(this)}/>
                 <Spacer/>
                 <Authors/>
