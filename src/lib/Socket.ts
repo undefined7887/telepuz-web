@@ -1,6 +1,7 @@
 import EventEmitter from "./EventEmitter";
 import {encode, decodeStream} from "@msgpack/msgpack"
 
+type Events = "open" | "close"
 type Callback = (message?: object) => void
 
 interface BlobMessageEvent extends MessageEvent {
@@ -23,15 +24,15 @@ export default class Socket extends EventEmitter {
         this.socket.onmessage = this.onMessage.bind(this)
     }
 
-    on(path: string, callback: Callback) {
+    on(path: Events | string, callback: Callback) {
         super.on(path, callback);
     }
 
-    once(path: string, callback: Callback) {
+    once(path: Events | string, callback: Callback) {
         super.once(path, callback);
     }
 
-    off(path: string, callback: Callback) {
+    off(path: Events | string, callback: Callback) {
         super.off(path, callback);
     }
 

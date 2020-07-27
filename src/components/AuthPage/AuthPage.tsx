@@ -66,7 +66,7 @@ export default class AuthPage extends React.Component<Props, State> {
                      onClick={this.onButtonClick.bind(this)}>
                     Войти
                 </div>
-                <div className={style.container}>
+                <div className={style.authors}>
                     Made for fun and test by<br/>
                     <a className={style.link}
                        href="https://github.com/undefined7887">
