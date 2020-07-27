@@ -1,6 +1,6 @@
 type Callback = (data?: unknown) => void
 
-type Handler = {
+interface Handler {
     once: boolean,
     callback: Callback
 }

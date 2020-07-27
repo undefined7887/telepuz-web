@@ -14,8 +14,6 @@ export default class App extends React.Component {
     render() {
         return (
             <div className={styles.app}>
-                <AuthPage socket={this.socket}
-                          onReady={this.onAuthPageReady.bind(this)}/>
             </div>
         )
     }
