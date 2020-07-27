@@ -1,15 +1,21 @@
-import React from "react";
-import style from "./App.styl"
-import Socket from "../../lib/Socket";
-import Form from "../Form/Form";
+import React from "react"
+import styles from "./App.styl"
+import AuthPage from "../AuthPage/AuthPage";
+import Socket from "../../lib/Socket"
 
 export default class App extends React.Component {
+    private socket = new Socket("sudox.ru:5000")
+
+    constructor(props) {
+        super(props);
+
+        console.log("Constructor called")
+    }
+
     render() {
         return (
-            <div className={style.container}>
-                <Form label="Никнейм"
-                      placeholder="Кто мы с тобой, орлы или вороны?"
-                      onEnterPress={() => console.log("Enter pressed")}/>
+            <div className={styles.app}>
+                <AuthPage socket={this.socket}/>
             </div>
         )
     }

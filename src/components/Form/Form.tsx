@@ -1,29 +1,57 @@
 import React from "react"
 import styles from "./Form.styl"
+import {classes} from "../../lib/utils";
 
 interface Props {
-    label: string
-    placeholder: string
-    onEnterPress: (element: HTMLInputElement) => void
+    labelText: string
+    inputText: string
+    onEnterPress?: () => void
 }
 
-export default class Form extends React.Component<Props> {
-    inputElement = React.createRef<HTMLInputElement>()
+interface State {
+    labelText: string
+    labelError: boolean
+}
 
-    onKeyPress(event: KeyboardEvent) {
+export default class Form extends React.Component<Props, State> {
+    private input = React.createRef<HTMLInputElement>()
+
+    state = {
+        labelText: this.props.labelText,
+        labelError: false
+    }
+
+    getValue(): string {
+        return this.input.current.value
+    }
+
+    updateLabel(text: string, error: boolean) {
+        this.setState({
+            labelText: text,
+            labelError: error
+        })
+    }
+
+    private onInputKeyPress(event: KeyboardEvent) {
+        console.log("button pressed")
         if (event.key === "Enter") {
-            this.props.onEnterPress(this.inputElement.current)
+            this.props.onEnterPress?.()
         }
     }
 
     render() {
+        let labelClasses = classes({
+            [styles.label]: true,
+            [styles.error]: this.state.labelError
+        })
+
         return (
-            <div className={styles.container}>
-                <div className={styles.label}>{this.props.label}</div>
-                <input ref={this.inputElement}
+            <div className={styles.form}>
+                <div className={labelClasses}>{this.state.labelText}</div>
+                <input ref={this.input}
                        className={styles.input}
-                       placeholder={this.props.placeholder}
-                       onKeyPress={this.onKeyPress.bind(this)}/>
+                       placeholder={this.props.inputText}
+                       onKeyPress={this.onInputKeyPress.bind(this)}/>
             </div>
         )
     }

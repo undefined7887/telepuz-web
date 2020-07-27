@@ -1,83 +1,77 @@
 import React from "react";
 import style from "./AuthPage.styl"
+import Spacer from "../Spacer/Spacer";
+import Authors from "../Authors/Authors";
+import Form from "../Form/Form";
+import Button from "../Button/Button";
+
 import Socket from "../../lib/Socket";
+
 
 const nicknameRegexp = /^[A-zА-яЁё0-9 ]{1,30}$/
 
 interface Props {
     socket: Socket
-}
-
-interface State {
-    labelText: string
-    labelError: boolean
-    buttonActive: boolean
+    onClose?: () => void
 }
 
 interface UsersCreateReply {
-    result: number
+    result: 0 | 1
 }
 
-export default class AuthPage extends React.Component<Props, State> {
-    socket = this.props.socket
-    state = {
-        labelText: "Никнейм",
-        labelError: false,
-        buttonActive: true,
+export default class AuthPage extends React.Component<Props> {
+    private socket = this.props.socket
+    private form = React.createRef<Form>()
+    private button = React.createRef<Button>()
+
+    private onFormEnterPress() {
+        this.createUser(this.form.current.getValue())
     }
-    inputFieldRef = React.createRef<HTMLInputElement>()
 
-    async onButtonClick() {
-        let nickname = this.inputFieldRef.current.value
+    private onButtonClick() {
+        // TODO: This
+    }
 
+    private createUser(nickname: string) {
         if (!nicknameRegexp.test(nickname)) {
-            this.setState({
-                labelText: "Неправильный формат никнейма",
-                labelError: true
-            })
+            this.form.current.updateLabel("Неправильный формат никнейма", true)
             return
         }
-
-        this.setState({
-            labelText: "Никнейм",
-            labelError: false,
-            buttonActive: false
-        })
 
         this.socket.emit("users.create", {
             user_nickname: nickname
         })
+
+        this.socket.once("users.create", (reply: UsersCreateReply) => {
+            setTimeout(() => {
+                this.button.current.update(false)
+
+                if (reply.result) {
+                    this.form.current.updateLabel("Неправильный формат никнейма", true)
+                }
+
+                this.props.onClose?.()
+            }, 1000)
+        })
+
+        this.button.current.update(true)
+        this.form.current.updateLabel("Никнейм", false)
     }
 
     render() {
         return (
-            <div className={style.container}>
+            <div className={style.authPage}>
+                <Spacer/>
                 <div className={style.logo}>Telepuz</div>
                 <div className={style.slogan}>Алё, ну чё там с деньгами?</div>
-                <div className={style.form}>
-                    <div className={this.state.labelError ? style.errorLabel : style.label}>
-                        {this.state.labelText}
-                    </div>
-                    <input ref={this.inputFieldRef}
-                           className={style.input}
-                           placeholder="Кто мы с тобой орлы или вороны?"/>
-                </div>
-                <div className={this.state.buttonActive ? style.activeButton : style.button}
-                     onClick={this.onButtonClick.bind(this)}>
-                    Войти
-                </div>
-                <div className={style.authors}>
-                    Made for fun and test by<br/>
-                    <a className={style.link}
-                       href="https://github.com/undefined7887">
-                        undefined
-                    </a>
-                    &nbsp;and&nbsp;
-                    <a className={style.link}
-                       href="https://github.com/KerJen">
-                        KerJen
-                    </a>
-                </div>
+                <Form ref={this.form}
+                      labelText="Никнейм"
+                      inputText="Кто мы с тобой, орлы или вороны?"
+                      onEnterPress={this.onFormEnterPress.bind(this)}/>
+                <Button ref={this.button}
+                        text="Войти"/>
+                <Spacer/>
+                <Authors/>
             </div>
         )
     }

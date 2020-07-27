@@ -15,6 +15,7 @@ export default class Socket extends EventEmitter {
     constructor(addr: string) {
         super();
         this.addr = addr
+        this.connect()
     }
 
     connect() {
