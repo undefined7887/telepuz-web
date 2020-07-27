@@ -1,7 +1,7 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-let buildPath = path.join(__dirname, 'build');
+let buildPath = path.join(__dirname, "build");
 
 module.exports = {
     mode: process.env.BUILD_MODE,
@@ -11,7 +11,11 @@ module.exports = {
         filename: "index.js",
     },
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".jsx"]
+        extensions: [".ts", ".tsx", ".js", ".jsx"],
+        alias: {
+            src: path.resolve(__dirname, 'src'),
+            components: path.resolve(__dirname, 'src/components')
+        }
     },
     module: {
         rules: [
