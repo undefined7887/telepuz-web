@@ -1,4 +1,4 @@
-type Callback = (data: unknown) => void
+type Callback = (data?: unknown) => void
 
 type Handler = {
     once: boolean,
