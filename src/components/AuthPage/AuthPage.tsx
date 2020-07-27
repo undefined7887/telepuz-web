@@ -1,61 +1,52 @@
 import React from "react";
 import style from "./AuthPage.styl"
 import Spacer from "../Spacer/Spacer";
+import AuthForm from "../AuthForm/AuthForm";
 import Authors from "../Authors/Authors";
-import Form from "../Form/Form";
-import Button from "../Button/Button";
-
 import Socket from "../../lib/Socket";
-
+import {timeout} from "../../lib/utils";
 
 const nicknameRegexp = /^[A-zА-яЁё0-9 ]{1,30}$/
 
 interface Props {
     socket: Socket
-    onClose?: () => void
+    onReady?: (userId: string) => void
 }
 
 interface UsersCreateReply {
     result: 0 | 1
+    user_id: string
 }
 
 export default class AuthPage extends React.Component<Props> {
     private socket = this.props.socket
-    private form = React.createRef<Form>()
-    private button = React.createRef<Button>()
+    private form = React.createRef<AuthForm>()
 
-    private onFormEnterPress() {
-        this.createUser(this.form.current.getValue())
-    }
-
-    private onButtonClick() {
+    private onFormReady() {
         this.createUser(this.form.current.getValue())
     }
 
     private createUser(nickname: string) {
+        let form = this.form.current
+
         if (!nicknameRegexp.test(nickname)) {
-            this.form.current.updateLabel("Неправильный формат никнейма", true)
+            form.update(true, "Неправильный формат никнейма", false)
             return
         }
 
-        this.socket.emit("users.create", {
-            user_nickname: nickname
+        form.update(false, "Никнейм", true)
+
+        this.socket.once("users.create", async (reply: UsersCreateReply) => {
+            await timeout(1000)
+            if (reply.result) {
+                form.update(true, "Неправильный формат никнейма", false)
+                return
+            }
+
+            this.props.onReady?.(reply.user_id)
         })
 
-        this.socket.once("users.create", (reply: UsersCreateReply) => {
-            setTimeout(() => {
-                this.button.current.update(false)
-
-                if (reply.result) {
-                    this.form.current.updateLabel("Неправильный формат никнейма", true)
-                }
-
-                this.props.onClose?.()
-            }, 1000)
-        })
-
-        this.button.current.update(true)
-        this.form.current.updateLabel("Никнейм", false)
+        this.socket.emit("users.create", {user_nickname: nickname})
     }
 
     render() {
@@ -64,13 +55,11 @@ export default class AuthPage extends React.Component<Props> {
                 <Spacer/>
                 <div className={style.logo}>Telepuz</div>
                 <div className={style.slogan}>Алё, ну чё там с деньгами?</div>
-                <Form ref={this.form}
-                      labelText="Никнейм"
-                      inputText="Кто мы с тобой, орлы или вороны?"
-                      onEnterPress={this.onFormEnterPress.bind(this)}/>
-                <Button ref={this.button}
-                        text="Войти"
-                        onClick={this.onButtonClick.bind(this)}/>
+                <AuthForm ref={this.form}
+                          labelText="Никнейм"
+                          inputText="Кто мы с тобой, орлы или вороны?"
+                          buttonText="Войти"
+                          onReady={this.onFormReady.bind(this)}/>
                 <Spacer/>
                 <Authors/>
             </div>
