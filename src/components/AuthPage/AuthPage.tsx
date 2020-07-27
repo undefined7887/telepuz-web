@@ -29,7 +29,7 @@ export default class AuthPage extends React.Component<Props> {
     }
 
     private onButtonClick() {
-        // TODO: This
+        this.createUser(this.form.current.getValue())
     }
 
     private createUser(nickname: string) {
@@ -69,7 +69,8 @@ export default class AuthPage extends React.Component<Props> {
                       inputText="Кто мы с тобой, орлы или вороны?"
                       onEnterPress={this.onFormEnterPress.bind(this)}/>
                 <Button ref={this.button}
-                        text="Войти"/>
+                        text="Войти"
+                        onClick={this.onButtonClick.bind(this)}/>
                 <Spacer/>
                 <Authors/>
             </div>

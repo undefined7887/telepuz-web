@@ -6,12 +6,6 @@ import Socket from "../../lib/Socket"
 export default class App extends React.Component {
     private socket = new Socket("sudox.ru:5000")
 
-    constructor(props) {
-        super(props);
-
-        console.log("Constructor called")
-    }
-
     render() {
         return (
             <div className={styles.app}>
