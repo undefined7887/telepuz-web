@@ -5,12 +5,13 @@ export default class Authors extends React.Component {
     render() {
         return (
             <div className={style.authors}>
-                Made for fun and test by<br/>
+                <span>Made for fun and test by</span>
+                <br/>
                 <a className={style.link}
                    href="https://github.com/undefined7887">
                     undefined
                 </a>
-                &nbsp;and&nbsp;
+                <span>&nbsp;and&nbsp;</span>
                 <a className={style.link}
                    href="https://github.com/KerJen">
                     KerJen

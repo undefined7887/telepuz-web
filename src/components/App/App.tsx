@@ -1,6 +1,7 @@
 import React from "react"
 import styles from "./App.styl"
-import AuthPage from "../AuthPage/AuthPage";
+import AuthPage from "../AuthPage/AuthPage"
+import User from "../User/User"
 import Socket from "../../lib/Socket"
 
 export default class App extends React.Component {
@@ -14,8 +15,7 @@ export default class App extends React.Component {
     render() {
         return (
             <div className={styles.app}>
-                <AuthPage socket={this.socket}
-                          onReady={this.onAuthPageReady.bind(this)}/>
+                <User nickname="undefined" status={1}/>
             </div>
         )
     }
