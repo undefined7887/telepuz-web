@@ -28,3 +28,14 @@ export async function timeout(timeout: number) {
         setTimeout(resolve, timeout)
     })
 }
+
+
+const userColors: Array<string> = ["#d32d2f", "#ab47bc", "#00bcd4", "#ff6d00", "#00c853"]
+
+export function getUserColorByNickname(nickname: string): string {
+    let number = 0
+    for (let i = 0; i < nickname.length; i++) {
+        number += nickname.charCodeAt(i)
+    }
+    return userColors[number % userColors.length]
+}

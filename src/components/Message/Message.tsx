@@ -1,28 +1,30 @@
 import React from "react"
 import styles from "./Message.styl"
-import {MessageObject, UserObject} from "../../api/api";
-import Photo from "../Photo/Photo";
+import {getUserColorByNickname} from "../../lib/utils";
 
 interface Props {
-    user: UserObject
-    message: MessageObject
     first: boolean
+    nickname: string
+    text: string
 }
 
 export default class Message extends React.Component<Props> {
     render() {
+        let userColor = getUserColorByNickname(this.props.nickname)
+
         return (
             <div className={styles.message}>
-                <Photo nickname={this.props.user.nickname}
-                       diameter="35px"
-                       fontSize="16px"/>
+                <div className={styles.photo}
+                     style={{background: userColor}}>
+                    {this.props.nickname.charAt(0).toUpperCase()}
+                </div>
                 <div className={styles.content}>
                     <div className={styles.nickname}
-                         style={{color: Photo.getBackground(this.props.user.nickname)}}>
-                        {this.props.user.nickname}
+                         style={{color: userColor}}>
+                        {this.props.nickname}
                     </div>
                     <div className={styles.text}>
-                        {this.props.message.text}
+                        {this.props.text}
                     </div>
                 </div>
             </div>

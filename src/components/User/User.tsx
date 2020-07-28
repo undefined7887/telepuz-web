@@ -1,12 +1,17 @@
 import React from "react"
 import styles from "./User.styl"
-import {UserObject} from "../../api/api";
-import Photo from "../Photo/Photo";
+import {getUserColorByNickname} from "../../lib/utils";
 
-export default class User extends React.Component<UserObject> {
+interface Props {
+    nickname: string
+    status: number
+}
+
+export default class User extends React.Component<Props> {
     render() {
-        let status: React.ReactNode;
+        let userColor = getUserColorByNickname(this.props.nickname)
 
+        let status: React.ReactNode;
         switch (this.props.status) {
             case 0:
                 status = (
@@ -32,9 +37,10 @@ export default class User extends React.Component<UserObject> {
 
         return (
             <div className={styles.user}>
-                <Photo nickname={this.props.nickname}
-                       diameter="55px"
-                       fontSize="20px"/>
+                <div className={styles.photo}
+                     style={{background: userColor}}>
+                    {this.props.nickname.charAt(0).toUpperCase()}
+                </div>
                 <div className={styles.info}>
                     <div className={styles.nickname}>{this.props.nickname}</div>
                     <div className={styles.status}>{status}</div>
