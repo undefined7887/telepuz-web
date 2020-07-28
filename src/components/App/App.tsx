@@ -2,25 +2,65 @@ import React from "react"
 import styles from "./App.styl"
 import AuthPage from "../AuthPage/AuthPage";
 import Socket from "../../lib/Socket"
-import Message from "../Message/Message";
-import User from "../User/User";
+import MainPage from "../MainPage/MainPage";
+import ConnectionPage from "../ConnectionPage/ConnectionPage";
+import {timeout} from "../../lib/utils";
+import {UserObject} from "../../api/api";
 
-export default class App extends React.Component {
-    private socket = new Socket("sudox.ru:5000")
+interface State {
+    page: string
+    user: UserObject
+}
 
-    private onAuthPageReady(userId: string) {
-        console.log(this.socket)
-        alert(`Successful auth, user_id: ${userId}`)
+const RECONNECT_TIMEOUT = 3000
+
+export default class App extends React.Component<unknown, State> {
+    private readonly socket: Socket
+
+    constructor(props: unknown) {
+        super(props);
+
+        this.socket = new Socket("sudox.ru:5000")
+
+        this.socket.on("open", () => {
+            this.setState({page: "auth", user: null})
+        })
+
+        this.socket.on("close", async () => {
+            this.setState({page: "connection", user: null})
+
+            await timeout(RECONNECT_TIMEOUT)
+            this.socket.connect()
+        })
+    }
+
+    state = {
+        page: "auth",
+        user: null
+    }
+
+    private onAuthPageReady(user: UserObject) {
+        this.setState({page: "main", user})
     }
 
     render() {
+        let page: React.ReactNode
+        switch (this.state.page) {
+            case "auth":
+                page = <AuthPage socket={this.socket}
+                                 onReady={this.onAuthPageReady.bind(this)}/>
+                break
+            case "main":
+                page = <MainPage socket={this.socket} user={this.state.user}/>
+                break
+
+            case "connection":
+                page = <ConnectionPage/>
+        }
+
         return (
             <div className={styles.app}>
-                <Message nickname="undef"
-                         text="Hello world"
-                         first={true}/>
-
-                <User nickname="undef" status={2}/>
+                {page}
             </div>
         )
     }

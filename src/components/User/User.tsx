@@ -14,14 +14,10 @@ export default class User extends React.Component<Props> {
         let status: React.ReactNode;
         switch (this.props.status) {
             case 0:
-                status = (
-                    <span className={styles.offline}>Отошел</span>
-                )
+                status = <span className={styles.offline}>Отошел</span>
                 break
             case 1:
-                status = (
-                    <span className={styles.online}>Онлайн</span>
-                )
+                status = <span className={styles.online}>Онлайн</span>
                 break
             case 2:
                 status = (

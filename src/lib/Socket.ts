@@ -2,7 +2,7 @@ import EventEmitter from "./EventEmitter";
 import {encode, decodeStream} from "@msgpack/msgpack"
 
 type Events = "open" | "close"
-type Callback = (message?: object) => void
+type Callback = (message?: any) => void
 
 interface BlobMessageEvent extends MessageEvent {
     readonly data: Blob
@@ -39,6 +39,15 @@ export default class Socket extends EventEmitter {
 
     emit(path: string, message: object) {
         this.socket.send(concatUint8Arrays(encode(path), encode(message)))
+    }
+
+    async request(path: string, message: object): Promise<any> {
+        let res = new Promise<any>(resolve => {
+            super.once(path, resolve)
+        })
+
+        this.emit(path, message)
+        return res
     }
 
     private onOpen() {

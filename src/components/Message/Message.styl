@@ -1,5 +1,6 @@
 .message
     display flex
+    margin-top 15px
 
 .photo
     display flex
@@ -26,3 +27,34 @@
 .text
     color #424242
     font-size 18px
+
+.notFirst
+    &.message
+        margin-top 4px
+
+    .photo
+        display none
+
+    .content
+        margin-left 47px
+
+    .nickname
+        display none
+
+.my
+    &.message
+        flex-direction row-reverse
+
+    .photo
+        display none
+
+    .content
+        border none
+        background #00bcd4
+        border-radius 16px 5px 16px 16px
+
+    .nickname
+        display none
+
+    .text
+        color white

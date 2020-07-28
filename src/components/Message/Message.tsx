@@ -1,19 +1,25 @@
 import React from "react"
 import styles from "./Message.styl"
-import {getUserColorByNickname} from "../../lib/utils";
+import {classes, getUserColorByNickname} from "../../lib/utils";
 
 interface Props {
     first: boolean
-    nickname: string
+    my: boolean
     text: string
+    nickname: string
 }
 
 export default class Message extends React.Component<Props> {
     render() {
         let userColor = getUserColorByNickname(this.props.nickname)
+        let messagesClasses = classes({
+            [styles.message]: true,
+            [styles.notFirst]: !this.props.first,
+            [styles.my]: this.props.my
+        })
 
         return (
-            <div className={styles.message}>
+            <div className={messagesClasses}>
                 <div className={styles.photo}
                      style={{background: userColor}}>
                     {this.props.nickname.charAt(0).toUpperCase()}

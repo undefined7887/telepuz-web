@@ -1,4 +1,5 @@
 import {UserObject} from "../api/api";
+import Socket from "./Socket";
 
 type ClassesObject = {[className: string]: boolean}
 
@@ -28,7 +29,6 @@ export async function timeout(timeout: number) {
         setTimeout(resolve, timeout)
     })
 }
-
 
 const userColors: Array<string> = ["#d32d2f", "#ab47bc", "#00bcd4", "#ff6d00", "#00c853"]
 
