@@ -73,6 +73,18 @@ export default class MainPage extends React.Component<Props, State> {
             this.messages.push(replyMessage.message)
             this.setState({messages: this.messages})
         })
+
+        window.onblur = () => {
+            this.setMyStatus(0)
+        }
+
+        window.onfocus = () => {
+            this.setMyStatus(1)
+        }
+    }
+
+    componentDidUpdate() {
+        this.messagesContainer.current.scrollTop = this.messagesContainer.current.scrollHeight
     }
 
     private async onMessageFormReady() {
@@ -101,10 +113,7 @@ export default class MainPage extends React.Component<Props, State> {
     private async setMyStatus(status: number) {
         this.users[this.props.user.id].status = status
         this.usersCopy[this.props.user.id].status = status
-
-        let replyMessage: UsersUpdateStatusReply =
-            await this.socket.request("users.updateStatus", {user_status: status} as UsersUpdateStatusMessage)
-
+        await this.socket.request("users.updateStatus", {user_status: status} as UsersUpdateStatusMessage);
         this.setState({users: this.users})
     }
 
@@ -121,14 +130,11 @@ export default class MainPage extends React.Component<Props, State> {
         let messages: React.ReactNode[] = []
         let lastUserId = ""
         for (let i = 0; i < this.state.messages.length; i++) {
-            console.log("LastUserId", lastUserId, this.state.messages)
             if (lastUserId != this.state.messages[i].user_id) {
                 lastUserId = this.state.messages[i].user_id
                 this.firstMessage = true
-                console.log("Setting first to true")
             } else {
                 this.firstMessage = false
-                console.log("Setting first to false")
             }
 
             messages.push(

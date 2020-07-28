@@ -28,6 +28,7 @@ export default class MessageForm extends React.Component<Props> {
             this.props.onReady?.()
             this.printing = false
             clearTimeout(this.timer)
+            this.props.onStopPrinting?.()
             return
         }
 
