@@ -28,10 +28,10 @@ interface State {
 
 export default class MainPage extends React.Component<Props, State> {
     private socket = this.props.socket
-    private firstMessage = true
     private messageForm = React.createRef<MessageForm>()
     private messagesContainer = React.createRef<HTMLDivElement>()
 
+    private firstMessage = true
     private users: Record<string, UserObject> = {}
     private usersCopy: Record<string, UserObject> = {}
 
@@ -95,8 +95,12 @@ export default class MainPage extends React.Component<Props, State> {
 
         this.messageForm.current.setValue("")
 
-        let replyMessage: MessagesCreateReply =
-            await this.socket.request("messages.create", {message_text: message} as MessagesCreateMessage)
+        let res = await Promise.all([
+            this.socket.request("messages.create", {message_text: message} as MessagesCreateMessage),
+            this.setMyStatus(1)
+        ])
+
+        let replyMessage: MessagesCreateReply = res[0]
 
         this.messages.push({id: replyMessage.message_id, user_id: this.props.user.id, text: message})
         this.setState({messages: this.messages})
