@@ -1,26 +1,9 @@
 import React from "react"
 import styles from "./User.styl"
+import {UserObject} from "../../api/api";
+import Photo from "../Photo/Photo";
 
-const photoColors: Array<string> = ["#d32d2f", "#ab47bc", "#00bcd4", "#ff6d00", "#00c853"]
-
-interface Props {
-    nickname: string
-    status: 0 | 1 | 2 // 0 - offline, 1 - online, 2 - typing
-}
-
-export default class User extends React.Component<Props> {
-    private getPhotoBackground(): string {
-        let number = 0
-        for (let i = 0; i < this.props.nickname.length; i++) {
-            number += this.props.nickname.charCodeAt(i)
-        }
-        return photoColors[number % photoColors.length]
-    }
-
-    private getInitials(): string {
-        return this.props.nickname.charAt(0).toUpperCase()
-    }
-
+export default class User extends React.Component<UserObject> {
     render() {
         let status: React.ReactNode;
 
@@ -49,10 +32,9 @@ export default class User extends React.Component<Props> {
 
         return (
             <div className={styles.user}>
-                <div className={styles.photo}
-                     style={{background: this.getPhotoBackground()}}>
-                    {this.getInitials()}
-                </div>
+                <Photo nickname={this.props.nickname}
+                       diameter="55px"
+                       fontSize="20px"/>
                 <div className={styles.info}>
                     <div className={styles.nickname}>{this.props.nickname}</div>
                     <div className={styles.status}>{status}</div>

@@ -5,17 +5,13 @@ import AuthForm from "../AuthForm/AuthForm";
 import Authors from "../Authors/Authors";
 import Socket from "../../lib/Socket";
 import {timeout} from "../../lib/utils";
+import {UsersCreateMessage, UsersCreateReply} from "../../api/api";
 
 const nicknameRegexp = /^[A-zА-яЁё0-9 ]{1,30}$/
 
 interface Props {
     socket: Socket
     onReady?: (userId: string) => void
-}
-
-interface UsersCreateReply {
-    result: 0 | 1
-    user_id: string
 }
 
 export default class AuthPage extends React.Component<Props> {
@@ -30,7 +26,7 @@ export default class AuthPage extends React.Component<Props> {
             this.props.onReady?.(replyMessage.user_id)
         })
 
-        this.socket.emit("users.create", {user_nickname: nickname})
+        this.socket.emit("users.create", {user_nickname: nickname} as UsersCreateMessage)
     }
 
     render() {

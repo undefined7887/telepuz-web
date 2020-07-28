@@ -1,3 +1,5 @@
+import {UserObject} from "../api/api";
+
 type ClassesObject = {[className: string]: boolean}
 
 export function classes(classesObject: ClassesObject): string {
@@ -26,4 +28,3 @@ export async function timeout(timeout: number) {
         setTimeout(resolve, timeout)
     })
 }
-
