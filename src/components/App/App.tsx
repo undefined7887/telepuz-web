@@ -1,7 +1,6 @@
 import React from "react"
 import styles from "./App.styl"
-import AuthPage from "../AuthPage/AuthPage"
-import User from "../User/User"
+import AuthPage from "../AuthPage/AuthPage";
 import Socket from "../../lib/Socket"
 
 export default class App extends React.Component {
@@ -15,7 +14,6 @@ export default class App extends React.Component {
     render() {
         return (
             <div className={styles.app}>
-                <User nickname="undefined" status={1}/>
             </div>
         )
     }
