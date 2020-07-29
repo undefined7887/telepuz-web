@@ -2,7 +2,7 @@
 Web client for simple chat room
 
 ### Requirements
-Your system must have the node.js & yarn installed
+Your system must have the **node.js** & **yarn** installed
 
 ### Setup
 ```
@@ -11,12 +11,13 @@ $ yarn
 ```
 
 ### Development
+Address is http://localhost:8080
 ```
 $ yarn start
 ```
 
 ### Production
-Note: Output files located inside **/build** directory
+Output files located inside **/build** directory
 ```
 $ yarn build
 ```
