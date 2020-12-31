@@ -19,7 +19,7 @@ export default class Socket extends EventEmitter {
     }
 
     connect() {
-        this.socket = new WebSocket(`ws://${this.addr}`)
+        this.socket = new WebSocket(`wss://${this.addr}`)
         this.socket.onopen = this.onOpen.bind(this)
         this.socket.onclose = this.onClose.bind(this)
         this.socket.onmessage = this.onMessage.bind(this)
