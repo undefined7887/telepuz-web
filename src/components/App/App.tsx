@@ -20,7 +20,7 @@ export default class App extends React.Component<unknown, State> {
     constructor(props: unknown) {
         super(props);
 
-        this.socket = new Socket("sudox.ru:5000")
+        this.socket = new Socket("theseems.ru:5000")
 
         this.socket.on("open", () => {
             this.setState({page: "auth", user: null})
